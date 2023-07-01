@@ -14,6 +14,7 @@ def main():
     This app will provide interactive maps and charts to help you plan your adventure in Kyrgyzstan!
     """)
 
+    print('Comment')
     mapbox_api_token = 'pk.eyJ1IjoibWFyZWt2YXNrdSIsImEiOiJja2trZTc0NHIwcGx5MndzN25idmJsanpuIn0.-fgkhjZNAzYg1OUw82ieZw'
 
     # Load the iframe links
