@@ -31,18 +31,19 @@ def plot_altitude_profile(file_path):
     df['CumulativeDistance'] = df['Distance'].cumsum()
 
     # Plot the altitude profile
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(12, 6))
     ax.plot(df['CumulativeDistance'], df['Altitude'])
     ax.set(xlabel='Distance (km)', ylabel='Altitude (m)', title='Altitude Profile')
     ax.grid()
 
     return fig
 
+
 def plot_gpx_track(gpx_df, mapbox_api_token):
     fig_map = px.line_mapbox(gpx_df, lat='latitude', lon='longitude', hover_name=gpx_df.index, zoom=10,
-                             mapbox_style="outdoors", color_discrete_sequence=['red'], width=800, height=500)
+                             mapbox_style="outdoors", color_discrete_sequence=['red'], width=800, height=600)
     fig_map.update_traces(line=dict(width=3))
-    fig_map.update_layout(mapbox={'accesstoken': mapbox_api_token})
+    fig_map.update_layout(mapbox={'accesstoken': mapbox_api_token}, width=800, height=600)
     st.plotly_chart(fig_map)
 
 
