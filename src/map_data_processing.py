@@ -61,3 +61,7 @@ def gpx_to_dataframe(gpx_file_path):
                 data.append([point.latitude, point.longitude, point.elevation])
 
     return pd.DataFrame(data, columns=['latitude', 'longitude', 'altitude'])
+
+
+def add_marker(map, name, lat, lon):
+    folium.Marker([lat, lon], popup=name).add_to(map)
