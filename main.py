@@ -1,7 +1,10 @@
 import streamlit as st
-from src.map_data_processing import plot_altitude_profile, plot_gpx_track, gpx_to_dataframe
+from src.map_data_processing import plot_altitude_profile, plot_gpx_track, \
+    gpx_to_dataframe, add_marker
 import pathlib as Path
 import json
+import folium
+from streamlit_folium import folium_static
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -9,12 +12,35 @@ warnings.filterwarnings('ignore')
 def main():
     st.title('Kyrgyzstan Trip Planning')
 
+    # Add the Kyrgyzstan flag image on the left side
+    col1 = st.sidebar
+    kyrgyzstan_flag_pic = 'images/Flag_of_Kyrgyzstan.png'
+    col1.image(kyrgyzstan_flag_pic, use_column_width=True)
+
+    # Add the Ala Kul lake image on the right side
+    col2 = st.empty()
+    ala_kul_lake_pic = 'images/ala_kul_lake.jpg'
+    col2.image(ala_kul_lake_pic, caption='Ala Kul lake', use_column_width=True)
+
+
+
     st.write("""
     Welcome to the Kyrgyzstan trip planning application. 
     This app will provide interactive maps and charts to help you plan your adventure in Kyrgyzstan!
     """)
 
     mapbox_api_token = 'pk.eyJ1IjoibWFyZWt2YXNrdSIsImEiOiJja2trZTc0NHIwcGx5MndzN25idmJsanpuIn0.-fgkhjZNAzYg1OUw82ieZw'
+
+    # Create a folium map
+    m = folium.Map(location=[41.2044, 74.7661], zoom_start=7)
+
+    # Add markers for the locations
+    add_marker(m, "Manas International Airport", 43.0608, 74.4774)
+    add_marker(m, "Bishkek", 42.8746, 74.5698)
+    add_marker(m, "Issyk-Kul Lake", 42.5234, 77.5856)
+
+    # Display the map
+    folium_static(m)
 
     # Load the iframe links
     with open('data/mapycz_links.json', 'r') as file:
