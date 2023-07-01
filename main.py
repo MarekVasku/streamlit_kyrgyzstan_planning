@@ -1,9 +1,8 @@
 import streamlit as st
 from src.map_data_processing import plot_altitude_profile, plot_gpx_track, gpx_to_dataframe
 from src.helper_functions import add_marker, load_map_links, get_trip_names, \
-    display_map, display_message, extract_points_of_interest, display_points_of_interest
+      extract_points_of_interest, display_points_of_interest
 import pathlib as Path
-import json
 import folium
 from streamlit_folium import folium_static
 
@@ -35,9 +34,9 @@ def main():
     m = folium.Map(location=[41.2044, 74.7661], zoom_start=7)
 
     # Display the points of interest on the map
-    kml_file = 'data/POI_Kyrgyzstan.kml'
-    gdf = extract_points_of_interest(kml_file)
-    display_points_of_interest(m, gdf)
+    csv_file = 'data/POI Kyrgyzstan.csv'
+    points_of_interest = extract_points_of_interest(csv_file)
+    display_points_of_interest(m, points_of_interest)
 
     # Display the map
     folium_static(m)
@@ -80,8 +79,8 @@ def main():
         st.write("No embedded map available for this selection.")
 
     st.write("""
-        Happy adventuring!
-        """)
+            Happy adventuring!
+            """)
 
 
 if __name__ == '__main__':

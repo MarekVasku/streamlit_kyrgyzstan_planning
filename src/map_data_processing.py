@@ -1,12 +1,10 @@
 from geopy.distance import geodesic
-import numpy as np
 import gpxpy
 import matplotlib.pyplot as plt
 import pandas as pd
-import folium
-import pydeck as pdk
 import streamlit as st
 import plotly.express as px
+import seaborn as sns
 
 
 def plot_altitude_profile(file_path):
@@ -14,29 +12,46 @@ def plot_altitude_profile(file_path):
     gpx = gpxpy.parse(gpx_file)
 
     data = []
-    # Get the track points from the GPX file
     for track in gpx.tracks:
         for segment in track.segments:
             for point in segment.points:
                 data.append([point.elevation, point.time, point.latitude, point.longitude])
 
-    # Create a DataFrame from all segment points
     df = pd.DataFrame(data, columns=['Altitude', 'Time', 'Latitude', 'Longitude'])
 
     # Calculate cumulative distance
     df['Distance'] = 0
     for i in range(1, len(df)):
-        df.loc[i, 'Distance'] = geodesic((df.loc[i-1, 'Latitude'], df.loc[i-1, 'Longitude']), (df.loc[i, 'Latitude'], df.loc[i, 'Longitude'])).km
+        df.loc[i, 'Distance'] = geodesic((df.loc[i-1, 'Latitude'], df.loc[i-1, 'Longitude']),
+                                         (df.loc[i, 'Latitude'], df.loc[i, 'Longitude'])).km
 
     df['CumulativeDistance'] = df['Distance'].cumsum()
 
     # Plot the altitude profile
-    fig, ax = plt.subplots(figsize=(12, 6))
-    ax.plot(df['CumulativeDistance'], df['Altitude'])
-    ax.set(xlabel='Distance (km)', ylabel='Altitude (m)', title='Altitude Profile')
-    ax.grid()
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(data=df, x='CumulativeDistance', y='Altitude', color='blue')
 
-    return fig
+    # Add labels and title
+    plt.xlabel('Distance (km)')
+    plt.ylabel('Altitude (m)')
+    plt.title('Altitude Profile - Mountain Trek')
+
+    # Add grid lines and background color
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.axhspan(0, max(df['Altitude']), facecolor='lightgray', alpha=0.2)
+
+    # Add markers for key points
+    peaks = df.loc[df['Altitude'].idxmax(), ['CumulativeDistance', 'Altitude']]
+    plt.scatter(x=peaks['CumulativeDistance'], y=peaks['Altitude'], color='red', label='Peaks')
+
+    # Customize the plot style
+    sns.set_style('whitegrid')
+    sns.despine()
+
+    # Show legend
+    plt.legend()
+
+    return plt.gcf()
 
 
 def plot_gpx_track(gpx_df, mapbox_api_token):

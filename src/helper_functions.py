@@ -1,7 +1,7 @@
 import json
 import folium
-import geopandas as gpd
 import streamlit as st
+import csv
 
 
 def add_marker(map, name, latitude, longitude):
@@ -42,17 +42,39 @@ def display_message(message):
     """
     st.write(message)
 
-def extract_points_of_interest(kml_file):
+
+import pandas as pd
+
+def extract_points_of_interest(csv_file):
     """
-    Extracts points of interest from a KML file.
+    Extracts points of interest from a CSV file and returns a DataFrame.
     """
-    gdf = gpd.read_file(kml_file, driver='KML')
-    return gdf
+    points_of_interest = []
+
+    with open(csv_file, 'r') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            wkt = row['WKT']
+            name = row['name']
+            description = row['description']
+
+            # Extract the coordinates from the WKT string
+            coordinates = wkt.strip('POINT ()').split(' ')
+            x = float(coordinates[0])
+            y = float(coordinates[1])
+
+            points_of_interest.append((name, x, y, description))
+
+    # Create a DataFrame from the list of points of interest
+    df = pd.DataFrame(points_of_interest, columns=['name', 'x', 'y', 'description'])
+    return df
 
 
 def display_points_of_interest(m, gdf):
     """
-    Display the points of interest on the Folium map.
+    Display points of interest on a Folium map.
     """
     for idx, row in gdf.iterrows():
-        folium.Marker([row['geometry'].y, row['geometry'].x], popup=row['name']).add_to(m)
+        folium.Marker([row['y'], row['x']], popup=row['name']).add_to(m)
+
