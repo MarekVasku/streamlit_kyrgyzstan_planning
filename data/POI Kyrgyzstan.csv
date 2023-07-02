@@ -1,16 +1,16 @@
-WKT,name,description
-"POINT (74.4694938 43.0542118)",Manas International Airport,
-"POINT (74.5697617 42.8746212)",Bishkek,
-"POINT (77.2864879 42.3882639)",Issyk Kul,
-"POINT (78.535556 42.3175)",Ala-Kul,
-"POINT (78.39559860000001 42.4782102)",Karakol,
-"POINT (78.219132 42.4260911)",Jeti Oguz,
-"POINT (78.6116101 42.373156)",Altyn-Arashan,
-"POINT (77.3543135 42.1565067)",Fairytale canyon "Skazka",
-"POINT (74.529163 42.53467310000001)",Racek camp,
-"POINT (74.5530048 42.5380267)",Teacher Peak,
-"POINT (79.02754519999999 42.6043933)",Jyrgalan,
-"POINT (76.1277866 42.74417570000001)",Chon-Kemin,
-"POINT (75.9158386 42.0888537)",Kol'ukok,
-"POINT (75.98405869999999 41.4273946)",Naryn,
-"POINT (76.40555599999999 40.63888899999999)",Köl-Suu,
+WKT,Name,Category,Description
+"POINT (74.4694938 43.0542118)","Manas International Airport","Město","Letiště v Biškeku, Kyrgyzstán"
+"POINT (74.5697617 42.8746212)","Bishkek","Město","Hlavní město Kyrgyzstánu"
+"POINT (77.2864879 42.3882639)","Issyk Kul","Příroda","Vysokohorské jezero v Kyrgyzstánu"
+"POINT (78.535556 42.3175)","Ala-Kul","Trek","Alpské jezero v pohoří Terskej Alatau"
+"POINT (78.39559860000001 42.4782102)","Karakol","Město","Město na východě Kyrgyzstánu"
+"POINT (78.219132 42.4260911)","Jeti Oguz","Příroda","Červené skalní útvary v údolí Jeti Oguz"
+"POINT (78.6116101 42.373156)","Altyn-Arashan","Příroda","Horké prameny a horské letovisko v údolí Altyn Arashan"
+"POINT (77.3543135 42.1565067)","Fairytale canyon Skazka","Příroda","Jedinečné skalní útvary v Pohádkovém údolí"
+"POINT (74.529163 42.53467310000001)","Racek camp","Trek","Kemp v horách poblíž Biškeku"
+"POINT (74.5530048 42.5380267)","Teacher Peak","Trek","Hora v pohoří Ťan-šan"
+"POINT (79.02754519999999 42.6043933)","Jyrgalan","Trek","Malebná vesnice v údolí Jyrgalan"
+"POINT (76.1277866 42.74417570000001)","Chon-Kemin","Příroda","Národní park známý pro své úchvatné krajiny a živočichy"
+"POINT (75.9158386 42.0888537)","Kol'ukok","Příroda","Malebná vesnice poblíž národního parku Ala-Archa"
+"POINT (75.98405869999999 41.4273946)","Naryn","Město","Město v centrálním Kyrgyzstánu"
+"POINT (76.40555599999999 40.63888899999999)","Köl-Suu","Příroda","Jezero na jihu Kyrgyzstánu"

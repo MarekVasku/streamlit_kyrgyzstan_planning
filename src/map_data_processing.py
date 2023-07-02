@@ -39,14 +39,21 @@ def plot_altitude_profile(file_path):
 
     # Plot the altitude profile using plotly
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df['CumulativeDistance'], y=df['Altitude'], name='Altitude',
-                             line=dict(color='firebrick', width=4)))
+    fig.add_trace(go.Scatter(
+        x=df['CumulativeDistance'],
+        y=df['Altitude'],
+        name='Altitude',
+        line=dict(color='firebrick', width=4),
+        hovertemplate=
+        '<b>Nadmořská výška</b>: %{y:.2f} m n. m.' +
+        '<br><b>Vzdálenost</b>: %{x:.2f} km<extra></extra>',
+    ))
 
     # Add peak annotation
     fig.add_annotation(
         x=peak_distance,
         y=peak_altitude,
-        text="Peak",
+        text="Vrchol",
         showarrow=True,
         font=dict(
             family="Courier New, monospace",
@@ -67,17 +74,29 @@ def plot_altitude_profile(file_path):
         opacity=0.8
     )
 
-    # Update the layout
-    fig.update_layout(title='Altitude Profile', xaxis_title='Distance (km)', yaxis_title='Altitude (m)')
+    fig.update_layout(title='Výškový profil', xaxis_title='Vzdálenost (km)', yaxis_title='Nadmořská výška (m n. m.)')
 
     st.plotly_chart(fig)
 
-def plot_gpx_track(gpx_df, mapbox_api_token):
-    fig_map = px.line_mapbox(gpx_df, lat='latitude', lon='longitude', hover_name=gpx_df.index, zoom=10,
-                             mapbox_style="outdoors", color_discrete_sequence=['red'], width=800, height=600)
-    fig_map.update_traces(line=dict(width=3))
-    fig_map.update_layout(mapbox={'accesstoken': mapbox_api_token}, width=800, height=600)
-    st.plotly_chart(fig_map)
+
+def plot_gpx_track(gpx_df, mapbox_api_token, color='blue'):
+    fig = px.line_mapbox(gpx_df, lat="latitude", lon="longitude",  color_discrete_sequence=[color], zoom=10, height=300, hover_data=["altitude"])
+
+    center_lat = gpx_df.latitude.mean()
+    center_lon = gpx_df.longitude.mean()
+
+    fig.update_layout(
+        mapbox_style="stamen-terrain",
+        mapbox_accesstoken=mapbox_api_token,
+        mapbox_zoom=10,
+        mapbox_center_lat = center_lat,
+        mapbox_center_lon = center_lon,
+        margin={"r":0,"t":0,"l":0,"b":0}
+    )
+    fig.update_layout(showlegend=False)
+    st.plotly_chart(fig)
+
+
 
 
 def gpx_to_dataframe(gpx_file_path):

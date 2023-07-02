@@ -2,6 +2,7 @@ import json
 import folium
 import streamlit as st
 import csv
+import pandas as pd
 
 
 def add_marker(map, name, latitude, longitude):
@@ -43,7 +44,6 @@ def display_message(message):
     st.write(message)
 
 
-import pandas as pd
 
 def extract_points_of_interest(csv_file):
     """
@@ -51,23 +51,24 @@ def extract_points_of_interest(csv_file):
     """
     points_of_interest = []
 
-    with open(csv_file, 'r') as file:
+    with open(csv_file, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
 
         for row in reader:
             wkt = row['WKT']
-            name = row['name']
-            description = row['description']
+            name = row['Name']
+            category = row['Category']
+            description = row['Description']
 
             # Extract the coordinates from the WKT string
             coordinates = wkt.strip('POINT ()').split(' ')
-            x = float(coordinates[0])
-            y = float(coordinates[1])
+            longitude = float(coordinates[0])
+            latitude = float(coordinates[1])
 
-            points_of_interest.append((name, x, y, description))
+            points_of_interest.append((name, latitude, longitude, category, description))
 
     # Create a DataFrame from the list of points of interest
-    df = pd.DataFrame(points_of_interest, columns=['name', 'x', 'y', 'description'])
+    df = pd.DataFrame(points_of_interest, columns=['Name', 'Latitude', 'Longitude', 'Category', 'Description'])
     return df
 
 
@@ -75,6 +76,34 @@ def display_points_of_interest(m, gdf):
     """
     Display points of interest on a Folium map.
     """
-    for idx, row in gdf.iterrows():
-        folium.Marker([row['y'], row['x']], popup=row['name']).add_to(m)
+    category_colors = {
+        "Město": "blue",
+        "Příroda": "green",
+        "Treky": "red",
+    }
+
+    unique_categories = gdf['Category'].unique().tolist()
+
+    for category in unique_categories:
+        feature_group = folium.FeatureGroup(name=category)
+
+        rows = gdf[gdf['Category'] == category]
+
+        for idx, row in rows.iterrows():
+            color = category_colors.get(row['Category'], 'black')
+            html = f"<b>{row['Name']}</b><br><span style='color: {color};'>{row['Category']}</span><br>{row['Description']}"
+            iframe = folium.IFrame(html, width=200, height=100)
+            popup = folium.Popup(iframe, max_width=200)
+            folium.Marker(
+                [row['Latitude'], row['Longitude']],
+                popup=popup,
+                icon=folium.Icon(color=color)
+            ).add_to(feature_group)
+
+        feature_group.add_to(m)
+
+    # Add a layer control to toggle feature groups
+    folium.LayerControl().add_to(m)
+
+
 
