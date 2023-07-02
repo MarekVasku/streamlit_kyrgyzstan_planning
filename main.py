@@ -13,12 +13,10 @@ warnings.filterwarnings('ignore')
 def main():
     st.title('Kyrgyzstan expedice - plánování')
 
-    # Add the Kyrgyzstan flag image on the left side
     col1 = st.sidebar
     kyrgyzstan_flag_pic = 'images/Flag_of_Kyrgyzstan.png'
     col1.image(kyrgyzstan_flag_pic, use_column_width=True)
 
-    # Add the Ala Kul lake image on the right side
     col2 = st.empty()
     ala_kul_lake_pic = 'images/ala_kul_lake.jpg'
     col2.image(ala_kul_lake_pic, caption='jezero Ala Kul', use_column_width=True)
@@ -64,8 +62,7 @@ def main():
             plot_gpx_track(gpx_df, mapbox_api_token)
 
         # Display the altitude profile
-        fig = plot_altitude_profile(selected_gpx_path)
-        st.pyplot(fig)
+        plot_altitude_profile(selected_gpx_path)
 
     # Get the iframe HTML of the selected map
     selected_map_html = map_links.get(selected_trip)
