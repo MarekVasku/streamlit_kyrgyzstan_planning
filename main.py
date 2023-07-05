@@ -37,25 +37,19 @@ def main():
     Karakolu a Ala-Archa pod Biškekem.
     """)
 
-    print('Comment')
     mapbox_api_token = 'pk.eyJ1IjoibWFyZWt2YXNrdSIsImEiOiJja2trZTc0NHIwcGx5MndzN25idmJsanpuIn0.-fgkhjZNAzYg1OUw82ieZw'
 
     # Create a folium map with 'openstreetmap' as the base layer
-    m = folium.Map(location=[41.2044, 74.7661], zoom_start=7, tiles='OpenStreetMap')
+    m = folium.Map(location=[42.2044, 76.2661], zoom_start=7.2, tiles='Stamen Terrain')
+
+    # Add tiles to map
+    folium.TileLayer('Stamen Terrain').add_to(m)  # Stamen Terrain tile
+    folium.TileLayer('OpenStreetMap').add_to(m)  # OpenStreetMap tile
 
     # Display the points of interest on the map
     csv_file = 'data/POI Kyrgyzstan.csv'
     points_of_interest = extract_points_of_interest(csv_file)
     display_points_of_interest(m, points_of_interest)
-
-    # Add tiles to map
-    folium.TileLayer('openstreetmap').add_to(m)
-    folium.TileLayer('Stamen Terrain').add_to(m)
-    folium.TileLayer('Stamen Toner').add_to(m)
-
-    # Create a layer control and add it to the map
-    layer_control = folium.LayerControl()
-    layer_control.add_to(m)
 
     # Display the map
     folium_static(m)
