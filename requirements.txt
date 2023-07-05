@@ -82,7 +82,6 @@ python-box==7.0.1
 python-dateutil==2.8.2
 pytz==2023.3
 pytz-deprecation-shim==0.1.0.post0
-pywin32==306
 pyzmq==25.1.0
 requests==2.31.0
 rich==13.4.2
