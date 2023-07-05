@@ -1,14 +1,15 @@
 import streamlit as st
+import leafmap
 from src.map_data_processing import plot_altitude_profile, plot_gpx_track, gpx_to_dataframe
 from src.helper_functions import add_marker, load_map_links, get_trip_names, \
       extract_points_of_interest, display_points_of_interest
 import pathlib as Path
 import folium
 import streamlit_folium
-
 from streamlit_folium import folium_static
 import pandas as pd
 from bs4 import BeautifulSoup
+import pydeck as pdk
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -54,6 +55,13 @@ def main():
     # Display the map
     folium_static(m)
 
+
+    with open('data/html_maps/3d_kyrgyzstan.html', 'r') as f:
+        html_string = f.read()
+
+    st.components.v1.html(html_string, height=800)
+
+
     # Load the iframe links
     map_links = load_map_links('data/mapycz_links.json')
     # Define the data directory and the GPX files
@@ -66,6 +74,9 @@ def main():
         "airport_bishkek": "PŘESUN: z letiště do Biškeku (maršrutka)",
         "bishkek_karakol": "PŘESUN: Biškek - Karakol (maršrutka)"
     }
+
+    # with open('data/json_data/trip_dict.json') as json_file:
+    #     trip_dict = json.load(json_file)
 
     # Extract file names without extensions
     trip_names = [file.stem for file in gpx_files]
